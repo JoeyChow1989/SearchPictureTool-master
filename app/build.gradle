@@ -1,0 +1,125 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.neenbedankt.android-apt'
+
+Properties props = new Properties()
+props.load(new FileInputStream(file("../config/key.properties")))
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        applicationId "com.example.administrator.searchpicturetool"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 6
+        versionName "3.0"
+        manifestPlaceholders = [
+                UMENG_APPKEY    : props['UMENG_APPKEY'],
+                UMENG_MESSAGE_SECRET : props['UMENG_MESSAGE_SECRET'],
+        ]
+    }
+    productFlavors {
+        xiaomi{}
+        baidu{}
+        wandoujia{}
+        qihu360{}
+        share{}
+        origin{}
+        qq{}
+    }
+    //应用到每一个flavor
+    productFlavors.all { flavor ->
+        manifestPlaceholders.put("UMENG_CHANNEL",name)
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    if (output.outputFile != null && output.outputFile.name.endsWith('.apk')
+                            &&'release'.equals(variant.buildType.name)) {
+                        def apkFile = new File(
+                                output.outputFile.getParent(),
+                                "SearchPictureTool_${variant.flavorName}_v${variant.versionName}_${buildTime()}.apk")
+                        output.outputFile = apkFile
+                    }
+                }
+            }
+            ndk {
+                abiFilters "armeabi"
+            }
+        }
+        debug {
+            ndk {
+                abiFilters "armeabi", "armeabi-v7a","x86"
+            }
+        }
+    }
+
+    dexOptions {
+        incremental true
+        javaMaxHeapSize "4g"
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/maven/com.squareup.okio/okio/pom.xml'
+        exclude 'META-INF/maven/com.squareup.okio/okio/pom.properties'
+    }
+}
+def buildTime() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMdd')
+    return formattedDate
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:cardview-v7:23.3.0'
+    compile 'com.jude:beam:2.8.8'
+    compile 'com.jude:fitsystemwindowlayout:2.0.0'
+    compile 'com.jakewharton:butterknife:8.0.1'
+    apt 'com.jakewharton:butterknife-compiler:8.0.1'
+//    compile 'com.jude:requestvolley:1.0.4'
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'com.facebook.fresco:fresco:0.10.0'
+    compile 'com.pnikosis:materialish-progress:1.7'
+    compile 'com.jude:utils:1.0.7'
+   // compile 'com.yalantis:contextmenu:1.0.4'
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta3'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.0.1'
+    compile 'com.jude:rollviewpager:1.2.9'
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
+    compile 'com.jakewharton:disklrucache:2.0.2'
+   /* debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'*/
+    compile project(':library')
+    compile project(':umengfamily')
+    compile project(':umeng_sharelibrary')
+    compile files('libs/com.umeng.message.lib_v2.5.0.jar')
+    compile files('libs/BmobSDK_V3.4.5_1111.jar')
+}

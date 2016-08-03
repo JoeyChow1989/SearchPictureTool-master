@@ -1,0 +1,1 @@
+include ':app', ':library', ':umengfamily', ':umeng_sharelibrary'

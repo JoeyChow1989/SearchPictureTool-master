@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+
+     <item
+         android:id="@+id/action_cut"
+         android:orderInCategory="100"
+         android:title="剪辑图片"
+         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_wrapper"
+        android:orderInCategory="100"
+        android:title="设为桌面壁纸"
+        app:showAsAction="never" />
+    <!-- <item
+         android:id="@+id/action_share"
+         android:icon="@drawable/ic_drawer_share"
+         android:orderInCategory="80"
+         android:title="分享图片"
+         app:showAsAction="never" />-->
+</menu>

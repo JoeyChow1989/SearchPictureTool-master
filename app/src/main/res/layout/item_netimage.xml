@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_margin="1dp"
+    card_view:cardElevation="2dp"
+    android:foreground="?selectableItemBackground"
+    android:layout_height="wrap_content">
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/net_img"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:scaleType="centerInside"
+            app:progressBarImage="@drawable/ic_loading"
+            app:progressBarImageScaleType="centerInside"
+            />
+        <View
+            android:id="@+id/bg_layout"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:padding="4dp"
+            android:background="@android:color/black"
+            android:alpha="0.5"
+            android:visibility="gone"
+            />
+        <ImageView
+            android:id="@+id/img_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            />
+</android.support.v7.widget.CardView>
